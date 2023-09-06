@@ -16,7 +16,7 @@
 #  
 ## Also note, I removed ipyparallel and used p_tqdm for parallel processing
 
-ARG BASE_CONTAINER=jupyter/minimal-notebook:python-3.8.8
+ARG BASE_CONTAINER=jupyter/minimal-notebook:python-3.8
 FROM $BASE_CONTAINER
 
 LABEL maintainer="Hu Chuan-Peng <hcp4715@hotmail.com>"
@@ -25,6 +25,8 @@ USER root
 
 # ffmpeg for matplotlib anim & dvipng for latex labels
 RUN apt-get update && \
+    apt-get upgrade -y && \
+    apt-get install -y build-essential && \
     apt-get install -y --no-install-recommends apt-utils && \
     apt-get install -y --no-install-recommends ffmpeg dvipng && \
     rm -rf /var/lib/apt/lists/*
