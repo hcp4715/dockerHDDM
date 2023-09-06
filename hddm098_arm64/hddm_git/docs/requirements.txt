@@ -1,0 +1,15 @@
+ipython
+matplotlib
+sphinx_rtd_theme
+sphinxcontrib-bibtex
+myst-parser
+traits
+traitlets
+traitsui
+PyQt5
+cython>=0.20
+patsy>=0.5.1
+git+https://github.com/AlexanderFengler/ssm_simulators@main
+git+https://github.com/hddm-devs/kabuki
+pymc==2.3.8
+#wxpython

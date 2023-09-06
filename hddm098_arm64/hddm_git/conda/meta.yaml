@@ -1,0 +1,33 @@
+package:
+  name: hddm     # lower case name of package, may contain '-' but no spaces
+  version: 0.6.0    # version of package
+
+source:
+# The source section specifies where the source code of the package is coming
+# from, it may be coming from a source tarball like:
+  fn: v0.6.0.zip
+  url: https://github.com/hddm-devs/hddm/archive/v0.6.0.zip
+
+# the build and runtime requirements:
+requirements:     # (optional)
+  build:
+    - python
+    - numpy
+    - pymc
+    - pandas
+    - matplotlib
+    - kabuki
+    - patsy
+    - cython
+  run:
+    - python
+    - numpy
+    - pymc
+    - pandas
+    - matplotlib
+    - kabuki
+    - patsy
+
+about:            # (optional)
+  home: https://ski.clps.brown.edu/hddm_docs/
+  license: BSD
