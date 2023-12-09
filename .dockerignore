@@ -3,4 +3,4 @@
 
 # Exceptitons
 !*.ipynb
-!/OfficialTutorial*.ipynb
+!/OfficialTutorials/*.ipynb
