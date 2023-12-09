@@ -62,4 +62,4 @@ docker build -t [username]/hddm:[tag] -f Dockerfile .
 ## Acknowledgement
 Thank [@madslupe](https://github.com/madslupe) for his previous HDDM image, which laid the base for the current version.
 
-Thank [Dr Rui Yuan](https://scholar.google.com/citations?user=h8_wSLkAAAAJ&hl=en) for his help in creating the Dockerfile.
+Thank [Wanke Pan](https://github.com/panwanke/), [Dr Rui Yuan](https://scholar.google.com/citations?user=h8_wSLkAAAAJ&hl=en) for his help in creating the Dockerfile.
