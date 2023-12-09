@@ -40,8 +40,8 @@ RUN mkdir /home/$NB_USER/OfficialTutorials && \
   rm -r /home/$NB_USER/work && \
   fix-permissions /home/$NB_USER
 
-COPY dockerHDDM_quick_view.ipynb /home/$NB_USER
-COPY dockerHDDM_workflow.ipynb /home/$NB_USER
-COPY OfficialTutorials/HDDM_Basic_Tutorial.ipynb /home/$NB_USER/OfficialTutorials
-COPY OfficialTutorials/HDDM_Regression_Stimcoding.ipynb /home/$NB_USER/OfficialTutorials
-COPY OfficialTutorials/Posterior_Predictive_Checks.ipynb /home/$NB_USER/OfficialTutorials
+COPY /dockerHDDM_Quick_View.ipynb /home/$NB_USER
+COPY /dockerHDDM_Workflow.ipynb /home/$NB_USER
+COPY /OfficialTutorials/HDDM_Basic_Tutorial.ipynb /home/$NB_USER/OfficialTutorials
+COPY /OfficialTutorials/HDDM_Regression_Stimcoding.ipynb /home/$NB_USER/OfficialTutorials
+COPY /OfficialTutorials/Posterior_Predictive_Checks.ipynb /home/$NB_USER/OfficialTutorials
