@@ -1,6 +1,6 @@
 # A HDDM docker image
 
-This is dockerHDDM github repo `hddm:0.8`: Python 3.8.8, HDDM 0.8.0. This version is more stable with classic HDDM functions for both amd64 and arm64. 
+This is dockerHDDM github repo `hddm:0.9.8`: Python 3.8.8, HDDM 0.9.8. This version is a more versatile version compatible for both amd64 and arm64. 
 
 In the `OfficialTutorial` folder, you can look for [official jupyter notebooks from HDDM](http://ski.clps.brown.edu/hddm_docs/tutorial.html) that have been tested and verified to work. 
 
@@ -17,14 +17,14 @@ First, make sure you have successfully installed and started docker. you can fin
 Second, pull the docker image from docker hub:
 
 ```
-docker pull hcp4715/hddm:0.8
+docker pull hcp4715/hddm:0.9.8
 ```
 
 Third, run the docker image with the following command:
 ```
 docker run -it --rm\
 -v $(pwd):/home/jovyan/work \
--p 8888:8888 hcp4715/hddm:0.8 jupyter notebook
+-p 8888:8888 hcp4715/hddm:0.9.8 jupyter notebook
 ```
 - `-v $(pwd):/home/jovyan/work` allows you to mount the current working directory to the docker container.
 - you can change the `$(pwd)` to any directory (e.g., "D:/hddm" in Windows) you want to mount to the docker container.

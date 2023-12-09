@@ -12,18 +12,33 @@ USER root
 
 RUN apt-get update -y && \
   apt-get upgrade -y && \
+  apt-get install -y apt-utils && \
   apt-get install -y build-essential&& \
-  apt-get install -y gfortran && \
-  rm -rf /var/lib/apt/lists/*
+  apt-get install -y gcc && \
+  apt-get install -y g++ && \
+  apt-get install -y gfortran
 
 USER $NB_UID
 
+# conda install -c conda-forge python-graphviz
+RUN conda install -c conda-forge --quiet --yes \
+  'h5py' \
+  'hdf5' \
+  'netcdf4' \
+  && \
+  conda clean --all -f -y && \
+  fix-permissions "/home/${NB_USER}"
 
 RUN pip install --upgrade pip
 RUN  pip install 'pandas==2.0.1'  -i https://pypi.tuna.tsinghua.edu.cn/simple
 RUN pip install git+https://gitee.com/epool/pymc2
 RUN pip install git+https://gitee.com/epool/kabuki 
-RUN pip install git+https://gitee.com/epool/hddm.git@0.8.0 && \
+RUN pip install git+https://gitee.com/epool/ssm-simulators -i https://pypi.tuna.tsinghua.edu.cn/simple 
+RUN pip install --no-cache-dir git+https://gitee.com/epool/hddm.git && \
+  fix-permissions "/home/${NB_USER}"
+
+RUN pip install 'arviz==0.14.0' -i https://pypi.tuna.tsinghua.edu.cn/simple
+RUN pip install --no-cache-dir torch==1.9.0 -i https://pypi.tuna.tsinghua.edu.cn/simple && \
   fix-permissions "/home/${NB_USER}"
 
 # Import matplotlib the first time to build the font cache.
@@ -41,8 +56,8 @@ RUN mkdir /home/$NB_USER/OfficialTutorials && \
   fix-permissions /home/$NB_USER
 
 
-COPY /dockerHDDM_tutorial/dockerHDDM_quick_view.ipynb /home/${NB_USER}
-COPY /dockerHDDM_tutorial/dockerHDDM_workflow.ipynb /home/${NB_USER}
-COPY /OfficialTutorial/HDDM_Basic_Tutorial.ipynb /home/${NB_USER}OfficialTutorials
-COPY /OfficialTutorial/HDDM_Regression_Stimcoding.ipynb /home/${NB_USER}OfficialTutorials
-COPY /OfficialTutorial/Posterior_Predictive_Checks.ipynb /home/${NB_USER}OfficialTutorials
+COPY /dockerHDDM_Quick_View.ipynb /home/$NB_USER
+COPY /dockerHDDM_Workflow.ipynb /home/$NB_USER
+COPY /OfficialTutorials/HDDM_Basic_Tutorial.ipynb /home/$NB_USER/OfficialTutorials
+COPY /OfficialTutorials/HDDM_Regression_Stimcoding.ipynb /home/$NB_USER/OfficialTutorials
+COPY /OfficialTutorials/Posterior_Predictive_Checks.ipynb /home/$NB_USER/OfficialTutorials

@@ -2,7 +2,7 @@ name: dockerHDDM CI
 
 on:
   push:
-    branches: [ "hddm0.8" ]
+    branches: [ "master" ]
 
 jobs:
 
@@ -21,4 +21,4 @@ jobs:
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v3
     - name: Build the Docker image
-      run: docker buildx build --platform linux/amd64,linux/arm64 -t ${{ secrets.DOCKERHUB_USERNAME }}/hddm:0.8 -f Dockerfile . --push
+      run: docker buildx build --platform linux/amd64,linux/arm64 -t ${{ secrets.DOCKERHUB_USERNAME }}/hddm:0.9.8 -f Dockerfile . --push
