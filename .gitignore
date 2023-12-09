@@ -3,3 +3,11 @@
 *cache*/
 *chain*
 *.Rhistory
+./hddm098_arm64/pymc2*
+./hddm098_arm64/pymc2*/
+
+# ignore ._ files produced by Mac OS
+._*
+*/._*
+*/*/._*
+*/*/*/._*

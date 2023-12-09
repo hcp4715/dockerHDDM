@@ -1,0 +1,2 @@
+include setup.py *.rst *.cfg *.conf LICENSE docs/UserGuide.pdf
+recursive-include pymc *.pyx *.py *.rst *.txt
