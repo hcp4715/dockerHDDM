@@ -1,5 +1,0 @@
-sudo docker run -it --rm --cpus=3 -e GRANT_SUDO=yes -v /Volumes/T3/Dell5510/Exp_Modeling/DDM/dockerDDM/hddm098_arm64:/home/jovyan/work \
--p 8787:8888 jupyter/scipy-notebook:aarch64-python-3.8 jupyter notebook
-
-sudo docker run -it --rm --cpus=3 -e GRANT_SUDO=yes -v /Volumes/T3/Dell5510/Exp_Modeling/DDM/dockerDDM/hddm08_aarch64:/home/jovyan/work \
--p 8888:8888 hcp4715/hddm:0.8_aarch64_test jupyter notebook

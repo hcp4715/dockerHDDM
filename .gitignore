@@ -1,13 +1,3 @@
-*checkpoints/
-*vscode/
-*cache*/
-*chain*
-*.Rhistory
-./hddm098_arm64/pymc2*
-./hddm098_arm64/pymc2*/
+.ipynb_checkpoints
 
-# ignore ._ files produced by Mac OS
-._*
-*/._*
-*/*/._*
-*/*/*/._*
+lan_to_hddm_tmp_data

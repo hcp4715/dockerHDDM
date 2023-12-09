@@ -1,118 +1,36 @@
 # A HDDM docker image
 
+This is dockerHDDM github repo `hddm:0.8`: Python 3.8.8, HDDM 0.8.0. This version is more stable with classic HDDM functions for both amd64 and arm64. 
+
+In the `OfficialTutorial` folder, you can look for [official jupyter notebooks from HDDM](http://ski.clps.brown.edu/hddm_docs/tutorial.html) that have been tested and verified to work. 
+
+The `dockerHDDM_Quick_View.ipynb` and `dockerHDDM_Workflow.ipynb` are new notebooks using new functions from dockerHDDM (more details see [dockerHDDM paper](https://osf.io/preprints/psyarxiv/6uzga)).
+
 ## Report issues
 If you have any problem in using this docker image, please report an issue at the [github repo](https://github.com/hcp4715/hddm_docker/issues) 
 
-## tags
-There a few different images, see hcp4715/hddm/tags.
-
-We recommend these three images:
-
-`latest`: same as `hddm:0.9.8RC`;
-
-`hddm:0.9.8RC`: Python 3.8.8, the latest version of [HDDM 0.9.8](https://hddm.readthedocs.io/en/latest/index.html), fixed a few bugs (credit to Wanke and [zenkavi](https://github.com/zenkavi)), this tag include images, one for machines with amd64 (intel) chips (same as `hddm:0.9.8-amd64`), one for machines with arm64 chips (m1/m2/apple, same as `hddm:0.9.8-arm64`).
-
-`hddm:0.9.8-amd64`: the HDDM 0.9.8 image for machines with amd64 (intel) chips; 
-
-`hddm:0.9.8-arm64`: the HDDM 0.9.8 image for machines with arm64 (m1/m2/apple) chips; 
-
-`hddm:0.8_tutorial`: Python 3.8.8, HDDM 0.8, kabuki 0.6.4, and with functions bridging HDDM model results and `arviz`. For machines with amd64 (intel) chips, with tutorial notebook linked to **Version 6** of the [this preprint](https://psyarxiv.com/6uzga/); 
-
-`hddm:0.8_tutorial_arm64`: Python 3.8.8, HDDM 0.8, kabuki 0.6.4, and with functions bridging HDDM model results and `arviz`. For machines with arm64 (m1/m2/apple) chips, with tutorial notebook linked to **Version 6** of the [this preprint](https://psyarxiv.com/6uzga/); 
-
-`hddm:0.9.8`: Python 3.8.8, the original version of HDDM 0.9.8. No example folder inside this image yet; amd64 only.
-
-`hddm:0.8`: Python 3.8.8, HDDM 0.8, and kabuki 0.6.4. This version is more stable with classic HDDM functions; amd64 only.
-
-These two are historical images, I keep them in case that some one has used it before.
-
-`hddm:arviz`: Python 3.7, HDDM 0.8, kabuki 0.6.4, and testing scripts that aimed at working with arviz.
-
-`hddm:tutorial_alpha`: Python 3.8.8, HDDM 0.8, and kabuki 0.6.4 installed directly from github, also with testing scripts that aimed at working with arviz
-
-## What is HDDM? 
-HDDM is a python package for hierarchical drift diffusion modelling, see [here](https://hddm.readthedocs.io/en/latest/index.html) for more. Please note the original HDDM developing team has released an updated version `[HSSM](https://lnccbrown.github.io/HSSM/)`. The purpose of this image is for those who are still using HDDM.
-
-## What's new about this docker image?
-This docker image was based on a previous HDDM docker image by Mads ([@madslupe](https://hub.docker.com/r/madslupe/hddm)), with a few improvements. 
-* Parallel processing with `p_tqdm` (`pathos` and `tqdm`). 
-* With the latest HDDM package (0.9.8) and fixed minor issues.
-* A few new python packages that are used for plotting (`seaborn`, `plotly`).
-* Python packages for Bayesian inference (`Arviz`).
-
-In the `examples` folder of this docker image (see below on how to use this image), you can find jupyter notebooks. Most of them include a jupyter notebook that reproduce the [official tutorial](http://ski.clps.brown.edu/hddm_docs/tutorial.html).
 
 ## How to use this docker image
-### Installation
-First, install docker and test it. You can find very user-friendly instructions on Docker's official site.
 
-#### Ubuntu
-Please read this [post on docker's website](https://docs.docker.com/engine/install/ubuntu/) for installing docker for linux (ubuntu included).
+First, make sure you have successfully installed and started docker. you can find very user-friendly instructions on the [official Docker website](https://docs.docker.com/get-docker/). 
 
-Then, pull the latest docker image from docker hub:
-
-```
-docker pull hcp4715/hddm
-```
-
-**Note**: you may need sudo permission to run the command `docker`.
-
-#### Window 10 (pro)
-Please read this [post](https://docs.docker.com/docker-for-windows/install/) for installing docker on window 10. During the installation of docker, you might be instructed to install/update your window subsystem linux (WSL), please follow the instruction to finish the installation of docker.
-
-Then, open window power shell, and pull the current docker image from docker hub:
+Second, pull the docker image from docker hub:
 
 ```
 docker pull hcp4715/hddm:0.8
 ```
 
-### Open Jupyter notebook
-
-After pulling it from docker hub, you can then run jupyter notebook in the container (e.g., in bash of linux or power shell of windows):
-
-#### Example code for Ubuntu:
+Third, run the docker image with the following command:
 ```
-docker run -it --rm --cpus=4 \
--v /home/hcp4715/dockerhddm:/home/jovyan/work \
--p 8888:8888 hcp4715/hddm jupyter notebook
+docker run -it --rm\
+-v $(pwd):/home/jovyan/work \
+-p 8888:8888 hcp4715/hddm:0.8 jupyter notebook
 ```
+- `-v $(pwd):/home/jovyan/work` allows you to mount the current working directory to the docker container.
+- you can change the `$(pwd)` to any directory (e.g., "D:/hddm" in Windows) you want to mount to the docker container.
+- Note, for Windows users, `$(pwd)` only work in Powershell other than cmd.exe.
 
-#### Example code for windows:
-
-```
-docker run -it --rm --cpus=4 -v /d/hcp4715/dockerhddm:/home/jovyan/work -p 8888:8888 hcp4715/hddm jupyter notebook  
-```
-
-or run docker in the current working direction
-
-```
-docker run -it  --rm -v ${PWD}:/home/jovyan/work -p 8888:8888 hcp4715/hddm jupyter notebook
-```
-
-#### Explanations of the example code
-
-`docker run` ---- Run a docker image in a container
-
-`-it` ---- Keep STDIN open even if not attached
-
-`--rm` ---- Automatically remove the container when it exits
-
-`--cpus=5` ---- Number of cores will be used by docker
-
-`-v` ---- Mount a folder to the container
-
-`/home/hcp4715/dockerhddm` ---- The directory of a local folder where I stored my data [For Linux/MacOS]. If you are using window, using `/d/hcp4715/dockerhddm`, that is the directory of a local folder under drive D. It appears as `D:\hcp4715\dockerhddm` in windows system.
-
-`/home/jovyan/work` ---- The directory inside the docker image (the mounting point of the local folder in the docker image). Note that the docker container itself likes a mini virtual linux system, so the file system inside it is linux style. 
-
-`-p` ---- Publish a container’s port(s) to the host
-
-`hcp4715/hddm` ---- The docker image to run. You can also be more specific and add the `tag`: `hcp4715/hddm:latest`. 
-
-`jupyter notebook` ---- Open juypter notebook when start running the container.
-
-After running the code above, bash will has output like this:
-
+Finally, open your browser and go to the following URL （After running the code above, bash will has output like this）:
 ```
 ....
 ....
@@ -122,38 +40,24 @@ Or copy and paste one of these URLs:
     http://174196acc395:8888/?token=75f1a7a8ffcbb55f0c2802433a9a5d57ac00868e05089c09
  or http://127.0.0.1:8888/?token=75f1a7a8ffcbb55f0c2802433a9a5d57ac00868e05089c09
 ```
+- Copy the full url (http://127.0.0.1:8888/?token=.......) to a browser (firefox or chrome) and it will show a web page, this is the interface of jupyter notebook! Note, in Windows system, it might be `localhost` instead of `127.0.0.1` in the url.
+- The jupyter notebooks (e.g., `dockerHDDM_Workflow.ipynb`) mentioned above also exists in the Jupyter interface. 
 
-Copy the full url (http://127.0.0.1:8888/?token=.......) to a browser (firefox or chrome) and it will show a web page, this is the interface of jupyter notebook! Note, in Windows system, it might be `localhost` instead of `127.0.0.1` in the url.
-
-Under the `Files` tab, there should be three folders: `work` and `examples`. The `work` folder is the local folder mounted in docker container. The `example` folder was the one built in docker image, this folder includes one dataset and one jupyter notebook, you can test the parallel processing by running this jupyter notebook.
-
-Enter `work` folder, you can start your analysis within jupyter notebook.
-
-## Using example
-The `examples` folder also includes two other jupyter notebooks, `HDDM_official_tutorial_reproduced.ipynb` reproduces the tutorial code, using the `HDDM` in this docker image. 
-
-```
-docker run -it --rm --cpus=4 \
--p 8888:8888 hcp4715/hddm jupyter notebook
-```
-
-## Potential errors
-1. Permission denied. If you still encounter this error, please see this [post](https://groups.google.com/forum/#!topic/hddm-users/Qh-aOC0N6cU) about the permission problem. 
-2. The port `8888` was occupied. You may use other ports by these two steps: (1) replace the `-p 8888:888` with `-p 8787:8888` in `docker run ...`, AND (2), change `8888` to `8787` after pasting the url generated by `docker run ...`.
 
 ## How this docker image was built
-An alternative way to get the docker image is to build it from `Dockerfile`.
 
-I built this docker image under Ubuntu 20.04. 
+We also provide a `Dockerfile` at root path to build the customized docker image.
 
-This Dockerfile is modified by Dr. Rui Yuan @ Stanford, based on the Dockerfile of [jupyter/scipy-notebook](https://hub.docker.com/r/jupyter/scipy-notebook/dockerfile). We installed additional packages for HDDM. See `Dockerfile` for the details
+
+We built this docker image under Ubuntu 22.04. This Dockerfile is modified by Dr. Rui Yuan @ Stanford, based on the Dockerfile of [jupyter/scipy-notebook](https://hub.docker.com/r/jupyter/scipy-notebook/dockerfile). We installed additional packages for HDDM. See `Dockerfile` for the details
 
 Code for building the docker image (don't forget the `.` in the end):
 
 ```
-docker build -t hcp4715/hddm:[tag] -f Dockerfile .
+docker build -t [username]/hddm:[tag] -f Dockerfile .
 ```
-* Replace the [tag] with a string you prefer.
+* [username] is your username on Docker Hub.
+* [tag] is docker images tag, e.g., `latest` or `v1.0`.
 
 ## Acknowledgement
 Thank [@madslupe](https://github.com/madslupe) for his previous HDDM image, which laid the base for the current version.
