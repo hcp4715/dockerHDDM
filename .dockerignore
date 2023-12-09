@@ -1,6 +1,0 @@
-# Ignore everything in the root directory
-/*
-
-# Exceptitons
-!*.ipynb
-!/OfficialTutorials/*.ipynb
