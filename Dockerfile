@@ -16,7 +16,8 @@ RUN apt-get update -y && \
   apt-get install -y build-essential&& \
   apt-get install -y gcc && \
   apt-get install -y g++ && \
-  apt-get install -y gfortran
+  apt-get install -y gfortran && \
+  rm -rf /var/lib/apt/lists/*
 
 USER $NB_UID
 
@@ -34,12 +35,13 @@ RUN  pip install 'pandas==2.0.1'  -i https://pypi.tuna.tsinghua.edu.cn/simple
 RUN pip install git+https://gitee.com/epool/pymc2
 RUN pip install git+https://gitee.com/epool/kabuki 
 RUN pip install git+https://gitee.com/epool/ssm-simulators -i https://pypi.tuna.tsinghua.edu.cn/simple 
-RUN pip install --no-cache-dir git+https://gitee.com/epool/hddm.git && \
+RUN pip install git+https://gitee.com/epool/hddm.git && \
   fix-permissions "/home/${NB_USER}"
 
-RUN pip install 'arviz==0.14.0' -i https://pypi.tuna.tsinghua.edu.cn/simple
-RUN pip install --no-cache-dir torch==1.9.0 -i https://pypi.tuna.tsinghua.edu.cn/simple && \
-  fix-permissions "/home/${NB_USER}"
+RUN pip install git+https://github.com/arviz-devs/arviz.git@2c50144d0b804078a6deebc7a861e583fe8d40c6
+RUN pip install torch==1.9.0 -i https://pypi.tuna.tsinghua.edu.cn/simple && \
+  fix-permissions "/home/${NB_USER}" && \
+  rm -rf ~/.cache/pip
 
 # Import matplotlib the first time to build the font cache.
 ENV XDG_CACHE_HOME="/home/${NB_USER}/.cache/"
