@@ -41,8 +41,8 @@ RUN mkdir /home/$NB_USER/OfficialTutorials && \
   fix-permissions /home/$NB_USER
 
 
-COPY /dockerHDDM_tutorial/dockerHDDM_quick_view.ipynb /home/${NB_USER}
-COPY /dockerHDDM_tutorial/dockerHDDM_workflow.ipynb /home/${NB_USER}
+COPY /dockerHDDM_quick_view.ipynb /home/${NB_USER}
+COPY /dockerHDDM_workflow.ipynb /home/${NB_USER}
 COPY /OfficialTutorial/HDDM_Basic_Tutorial.ipynb /home/${NB_USER}OfficialTutorials
 COPY /OfficialTutorial/HDDM_Regression_Stimcoding.ipynb /home/${NB_USER}OfficialTutorials
 COPY /OfficialTutorial/Posterior_Predictive_Checks.ipynb /home/${NB_USER}OfficialTutorials
