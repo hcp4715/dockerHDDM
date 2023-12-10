@@ -38,7 +38,7 @@ RUN pip install git+https://gitee.com/epool/ssm-simulators -i https://pypi.tuna.
 RUN pip install git+https://gitee.com/epool/hddm.git && \
   fix-permissions "/home/${NB_USER}"
 
-RUN pip install git+https://github.com/arviz-devs/arviz.git@2c50144d0b804078a6deebc7a861e583fe8d40c6
+RUN pip install arviz==0.15.1 -i https://pypi.tuna.tsinghua.edu.cn/simple 
 RUN pip install torch==1.9.0 -i https://pypi.tuna.tsinghua.edu.cn/simple && \
   fix-permissions "/home/${NB_USER}" && \
   rm -rf ~/.cache/pip
