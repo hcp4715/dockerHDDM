@@ -20,7 +20,7 @@ USER $NB_UID
 
 
 RUN pip install --upgrade pip
-RUN  pip install 'pandas==2.0.1'  -i https://pypi.tuna.tsinghua.edu.cn/simple
+RUN pip install 'pandas==2.0.1' -i https://pypi.tuna.tsinghua.edu.cn/simple
 RUN pip install git+https://gitee.com/epool/pymc2
 RUN pip install git+https://gitee.com/epool/kabuki 
 RUN pip install git+https://gitee.com/epool/hddm.git@0.8.0 && \
