@@ -21,9 +21,11 @@ jobs:
         password: ${{ secrets.DOCKERHUB_PASSWORD }} 
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v3
-    - name: Build the Docker image
-      run: docker buildx build --platform linux/amd64,linux/arm64 -t ${{ secrets.DOCKERHUB_USERNAME }}/${{env.HDDM_VERSION}} -f Dockerfile . --push
     - name: push amd64
       run: docker buildx build --platform linux/amd64 -t ${{ secrets.DOCKERHUB_USERNAME }}/${{env.HDDM_VERSION}}-amd64 -f Dockerfile . --push
     - name: push arm64
       run: docker buildx build --platform linux/arm64 -t ${{ secrets.DOCKERHUB_USERNAME }}/${{env.HDDM_VERSION}}-arm64 -f Dockerfile . --push
+    - name: Build the Docker image
+      run: docker buildx build --platform linux/amd64,linux/arm64 -t ${{ secrets.DOCKERHUB_USERNAME }}/${{env.HDDM_VERSION}} -f Dockerfile . --push
+    - name: Build the Docker image
+      run: docker buildx build --platform linux/amd64,linux/arm64 -t ${{ secrets.DOCKERHUB_USERNAME }}/latest -f Dockerfile . --push
