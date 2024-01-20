@@ -27,6 +27,8 @@ RUN pip install git+https://gitee.com/epool/kabuki
 RUN pip install git+https://gitee.com/epool/hddm.git@0.8.0 && \
   fix-permissions "/home/${NB_USER}"
 # Import matplotlib the first time to build the font cache.
+RUN pip install seaborn==0.13.1 -i https://pypi.tuna.tsinghua.edu.cn/simple
+
 ENV XDG_CACHE_HOME="/home/${NB_USER}/.cache/"
 
 RUN MPLBACKEND=Agg python -c "import matplotlib.pyplot" &&\
