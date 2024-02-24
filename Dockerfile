@@ -4,7 +4,7 @@
 # This Dockerfile is for DDM tutorial
 # The buid from the base of scipy-notebook, based on python 3.8
 
-FROM jupyter/scipy-notebook:python-3.8
+FROM jupyter/scipy-notebook:python-3.9
 
 LABEL maintainer="Hu Chuan-Peng <hcp4715@hotmail.com>"
 
@@ -35,7 +35,7 @@ RUN pip install pandas==2.0.1 -i https://pypi.tuna.tsinghua.edu.cn/simple
 RUN pip install git+https://gitee.com/epool/pymc2
 RUN pip install git+https://gitee.com/epool/kabuki
 RUN pip install git+https://gitee.com/epool/ssm-simulators@dockerHDDM_stable -i https://pypi.tuna.tsinghua.edu.cn/simple 
-RUN pip install git+https://gitee.com/epool/hddm.git && \
+RUN pip install git+https://gitee.com/epool/hddm.git@1.0.1 && \
   fix-permissions "/home/${NB_USER}"
 
 RUN pip install arviz==0.15.1 -i https://pypi.tuna.tsinghua.edu.cn/simple 
