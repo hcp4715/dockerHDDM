@@ -2,7 +2,7 @@ name: dockerHDDM CI
 
 on:
   push:
-    branches: [ "dev" ]
+    branches: [ "hddm1.0.1" ]
 
 jobs:
 
@@ -27,3 +27,5 @@ jobs:
       run: docker buildx build --platform linux/arm64 -t ${{ secrets.DOCKERHUB_USERNAME }}/${{env.HDDM_VERSION}}-arm64 -f Dockerfile . --push
     - name: Build the Combined Manifest
       run: docker buildx build --platform linux/amd64,linux/arm64 -t ${{ secrets.DOCKERHUB_USERNAME }}/${{env.HDDM_VERSION}} -f Dockerfile . --push
+    - name: Build the Newest Manifest
+      run: docker buildx build --platform linux/amd64,linux/arm64 -t ${{ secrets.DOCKERHUB_USERNAME }}/hddm:latest -f Dockerfile . --push
