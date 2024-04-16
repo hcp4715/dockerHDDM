@@ -57,7 +57,7 @@ Code for building the docker image (don't forget the `.` in the end):
 docker build -t [username]/hddm:[tag] -f Dockerfile .
 ```
 * [username] is your username on Docker Hub.
-* [tag] is docker images tag, e.g., `latest` or `v1.0`.
+* [tag] is docker images tag, e.g., `latest` or `0.9.8`.
 
 ## Acknowledgement
 Thank [@madslupe](https://github.com/madslupe) for his previous HDDM image, which laid the base for the current version.
