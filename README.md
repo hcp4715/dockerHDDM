@@ -59,6 +59,12 @@ docker build -t [username]/hddm:[tag] -f Dockerfile .
 * [username] is your username on Docker Hub.
 * [tag] is docker images tag, e.g., `latest` or `1.0.1`.
 
+## How to cite us
+
+If you used this docker image in your research, please cite our ppreprint and Wiecki et al 2013:
+
+> Pan, W., Geng, H., Zhang, L., Fengler, A., Frank, M., ZHANG, R., & Chuan-Peng, H. (2022, November 1). A Hitchhiker’s Guide to Bayesian Hierarchical Drift-Diffusion Modeling with dockerHDDM. https://doi.org/10.31234/osf.io/6uzga
+
 ## Acknowledgement
 Thank [@madslupe](https://github.com/madslupe) for his previous HDDM image, which laid the base for the current version.
 
