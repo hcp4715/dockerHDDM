@@ -1,8 +1,8 @@
 name: dockerHDDM CI
 
 on:
-  push:
-    branches: [ "hddm1.0.1" ]
+  workflow_dispatch:
+
 
 jobs:
 
