@@ -9,6 +9,10 @@ The `dockerHDDM_Quick_View.ipynb` and `dockerHDDM_Workflow.ipynb` are new notebo
 ## Report issues
 If you have any problem in using this docker image, please report an issue at the [github repo](https://github.com/hcp4715/hddm_docker/issues) 
 
+## How to cite us
+If you used this docker image in your research, please cite [Wiecki et al 2013](https://www.frontiersin.org/articles/10.3389/fninf.2013.00014/full) and our preprint: 
+
+> Pan, W., Geng, H., Zhang, L., Fengler, A., Frank, M., Zhang, R.-Y., & Chuan-Peng, H. (2022, November 1). A Hitchhiker’s Guide to Bayesian Hierarchical Drift-Diffusion Modeling with dockerHDDM. PsyArXiv. https://doi.org/10.31234/osf.io/6uzga
 
 ## How to use this docker image
 
@@ -58,12 +62,6 @@ docker build -t [username]/hddm:[tag] -f Dockerfile .
 ```
 * [username] is your username on Docker Hub.
 * [tag] is docker images tag, e.g., `latest` or `1.0.1`.
-
-## How to cite us
-
-If you used this docker image in your research, please cite our ppreprint and Wiecki et al 2013:
-
-> Pan, W., Geng, H., Zhang, L., Fengler, A., Frank, M., ZHANG, R., & Chuan-Peng, H. (2022, November 1). A Hitchhiker’s Guide to Bayesian Hierarchical Drift-Diffusion Modeling with dockerHDDM. https://doi.org/10.31234/osf.io/6uzga
 
 ## Acknowledgement
 Thank [@madslupe](https://github.com/madslupe) for his previous HDDM image, which laid the base for the current version.
