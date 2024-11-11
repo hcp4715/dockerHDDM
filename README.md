@@ -14,7 +14,7 @@ If you have any problem in using this docker image, please report an issue at th
 
 If you used this docker image in your research, please cite [Wiecki et al 2013](https://www.frontiersin.org/articles/10.3389/fninf.2013.00014/full) and our preprint:
 
-> Pan, W., Geng, H., Zhang, L., Fengler, A., Frank, M., ZHANG, R., & Chuan-Peng, H. (2022, November 1). dockerHDDM: A user-friendly environment for Bayesian Hierarchical Drift-Diffusion Modeling. https://doi.org/10.31234/osf.io/6uzga
+> Pan, W., Geng, H., Zhang, L., Fengler, A., Frank, M., ZHANG, R., & Chuan-Peng, H. (2024). dockerHDDM: A user-friendly environment for Bayesian Hierarchical Drift-Diffusion Modeling. *Advances in Methods and Practices in Psychological Science*. preprint: https://doi.org/10.31234/osf.io/6uzga
 
 ## How to use this docker image
 
