@@ -72,6 +72,6 @@ docker build -t [username]/hddm:[tag] -f Dockerfile .
 
 Thank [@madslupe](https://github.com/madslupe) for his previous HDDM image, which laid the base for the current version.
 
-Thank [Wanke Pan](https://github.com/panwanke/), [Dr Rui Yuan](https://scholar.google.com/citations?user=h8_wSLkAAAAJ&hl=en) for his help in creating the Dockerfile. 
+Thank [Dr Rui Yuan](https://scholar.google.com/citations?user=h8_wSLkAAAAJ&hl=en) for his help in creating the Dockerfile. 
 
 We would like to express our gratitude to the HDDM package for providing the dataset `cavanagh_theta_nn.csv` as an example in our study. Please note that this dataset is not owned by us and is used for illustrative purposes only. For reference, the dataset can be found at [HDDM GitHub repository](https://github.com/hddm-devs/hddm/blob/master/hddm/examples/cavanagh_theta_nn.csv).
