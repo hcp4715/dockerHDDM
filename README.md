@@ -53,6 +53,17 @@ Or copy and paste one of these URLs:
 - Copy the full url (http://127.0.0.1:8888/?token=.......) to a browser (firefox or chrome) and it will show a web page, this is the interface of jupyter notebook! Note, in Windows system, it might be `localhost` instead of `127.0.0.1` in the url.
 - The jupyter notebooks (e.g., `dockerHDDM_Workflow.ipynb`) mentioned above also exists in the Jupyter interface.
 
+## External Resources
+
+### Youtube Video Tutorial
+
+[dockerHDDM installation and usage guide | cognitive modeling | RT modeling | tutorial](https://www.youtube.com/watch?v=ZU1fbXEuP8s)
+
+### Bilibili Video Tutorial
+
+[dockerHDDM安装和使用介绍视频](https://www.bilibili.com/video/BV1u28Ye1ERw/)
+
+
 ## How this docker image was built
 
 We also provide a `Dockerfile` at root path to build the customized docker image.
