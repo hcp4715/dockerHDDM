@@ -49,6 +49,10 @@ jobs:
         run: |
           echo "=== Installing pymc2 from gitee epool ==="
           pip install --upgrade pip
+          # pymc2 setup.py uses 'import pkg_resources' which was removed from
+          # setuptools >= 67.0. Python 3.12 images ship setuptools >= 70.
+          # Installing setuptools explicitly provides the pkg_resources shim.
+          pip install setuptools
           pip install git+https://gitee.com/epool/pymc2
           echo "=== Verifying pymc2 import ==="
           python -c "import pymc; print('pymc version:', pymc.__version__)"
