@@ -1,6 +1,8 @@
 # A HDDM docker image
 
-This is dockerHDDM github repo `hddm:1.0.1`: Python 3.9, HDDM 1.0.1. This version is a more versatile version compatible for both amd64 and arm64.
+This is dockerHDDM github repo `hddm:1.1.0`: Python 3.12, HDDM (latest), arviz 0.20.x, and pymc2 from the Gitee epool mirror. This version is compatible for both amd64 and arm64.
+
+> **v1.1.0 Changelog**: Upgraded Python from 3.9 to 3.12, Ubuntu from 22.04 to 24.04, arviz from 0.15.1 to 0.20.x. kabuki/hddm use latest gitee epool commits. pymc2 is installed from the `master` branch of `https://gitee.com/epool/pymc2` and builds without numpy.distutils.
 
 In the `OfficialTutorial` folder, you can look for [official jupyter notebooks from HDDM](http://ski.clps.brown.edu/hddm_docs/tutorial.html) that have been tested and verified to work.
 
@@ -23,7 +25,7 @@ First, make sure you have successfully installed and started docker. you can fin
 Second, pull the docker image from docker hub:
 
 ```
-docker pull hcp4715/hddm:1.0.1
+docker pull hcp4715/hddm:1.1.0
 ```
 
 Third, run the docker image with the following command:
@@ -31,7 +33,7 @@ Third, run the docker image with the following command:
 ```
 docker run -it --rm\
 -v $(pwd):/home/jovyan/work \
--p 8888:8888 hcp4715/hddm:1.0.1 jupyter notebook
+-p 8888:8888 hcp4715/hddm:1.1.0 jupyter notebook
 ```
 
 - `-v $(pwd):/home/jovyan/work` allows you to mount the current working directory to the docker container.
@@ -68,7 +70,7 @@ Or copy and paste one of these URLs:
 
 We also provide a `Dockerfile` at root path to build the customized docker image.
 
-We built this docker image under Ubuntu 22.04. This Dockerfile is modified by Dr. Rui Yuan @ Stanford, based on the Dockerfile of [jupyter/scipy-notebook](https://hub.docker.com/r/jupyter/scipy-notebook/dockerfile). We installed additional packages for HDDM. See `Dockerfile` for the details
+**v1.1.0** is built on Ubuntu 24.04 (Python 3.12), based on [quay.io/jupyter/scipy-notebook:python-3.12](https://quay.io/repository/jupyter/scipy-notebook). This Dockerfile was originally created by Dr. Rui Yuan @ Stanford and has been maintained and upgraded by the dockerHDDM team. See `Dockerfile` for the details.
 
 Code for building the docker image (don't forget the `.` in the end):
 
@@ -77,12 +79,22 @@ docker build -t [username]/hddm:[tag] -f Dockerfile .
 ```
 
 * [username] is your username on Docker Hub.
-* [tag] is docker images tag, e.g., `latest` or `1.0.1`.
+* [tag] is docker images tag, e.g., `latest` or `1.1.0`.
+
+### Test the Docker build with GitHub Actions
+
+Open the repository's `Actions` page, select `dockerHDDM CI (Build & Publish)`,
+and run the workflow manually with `publish` set to `false`. The workflow builds
+an amd64 image without publishing it, then verifies that `pymc`, `kabuki`, and
+`hddm` import successfully.
+
+Set `publish` to `true` only when the validation build passes and you want to
+publish the amd64 and arm64 images to Docker Hub.
 
 ## Acknowledgement
 
 Thank [@madslupe](https://github.com/madslupe) for his previous HDDM image, which laid the base for the current version.
 
-Thank [Dr Rui Yuan](https://scholar.google.com/citations?user=h8_wSLkAAAAJ&hl=en) for his help in creating the Dockerfile. 
+Thank [Dr Rui Yuan](https://scholar.google.com/citations?user=h8_wSLkAAAAJ&hl=en) for his help in creating the Dockerfile.
 
 We would like to express our gratitude to the HDDM package for providing the dataset `cavanagh_theta_nn.csv` as an example in our study. Please note that this dataset is not owned by us and is used for illustrative purposes only. For reference, the dataset can be found at [HDDM GitHub repository](https://github.com/hddm-devs/hddm/blob/master/hddm/examples/cavanagh_theta_nn.csv).

@@ -1,31 +1,68 @@
-name: dockerHDDM CI
+name: dockerHDDM CI (Build & Publish)
 
 on:
   workflow_dispatch:
-
+    inputs:
+      version:
+        description: 'Version tag (e.g., 1.1.0)'
+        required: true
+        default: '1.1.0'
+        type: string
+      publish:
+        description: 'Push the multi-arch image to Docker Hub'
+        required: true
+        default: false
+        type: boolean
+  push:
+    tags:
+      - 'v*'
 
 jobs:
 
   buildx:
-
     runs-on: ubuntu-latest
     env:
-      HDDM_VERSION: hddm:1.0.1
+      HDDM_VERSION: hddm:${{ inputs.version || '1.1.0' }}
     steps:
     - name: Checkout
       uses: actions/checkout@v4
-    - name: Docker login
-      uses: docker/login-action@v1
-      with:
-        username: ${{ secrets.DOCKERHUB_USERNAME }}
-        password: ${{ secrets.DOCKERHUB_PASSWORD }} 
+
+    - name: Extract version from tag (if tag push)
+      if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+      run: |
+        VERSION="${GITHUB_REF#refs/tags/v}"
+        echo "HDDM_VERSION=hddm:${VERSION}" >> "$GITHUB_ENV"
+
+    - name: Set up QEMU (for arm64 emulation)
+      uses: docker/setup-qemu-action@v3
+
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v3
-    - name: push amd64
-      run: docker buildx build --platform linux/amd64 -t ${{ secrets.DOCKERHUB_USERNAME }}/${{env.HDDM_VERSION}}-amd64 -f Dockerfile . --push
-    - name: push arm64
-      run: docker buildx build --platform linux/arm64 -t ${{ secrets.DOCKERHUB_USERNAME }}/${{env.HDDM_VERSION}}-arm64 -f Dockerfile . --push
-    - name: Build the Combined Manifest
-      run: docker buildx build --platform linux/amd64,linux/arm64 -t ${{ secrets.DOCKERHUB_USERNAME }}/${{env.HDDM_VERSION}} -f Dockerfile . --push
-    - name: Build the Newest Manifest
-      run: docker buildx build --platform linux/amd64,linux/arm64 -t ${{ secrets.DOCKERHUB_USERNAME }}/hddm:latest -f Dockerfile . --push
+
+    - name: Build amd64 image for validation
+      if: github.event_name == 'workflow_dispatch' && inputs.publish != true
+      run: |
+        docker buildx build --platform linux/amd64 \
+          -t dockerhddm:test \
+          -f Dockerfile . --load
+
+    - name: Smoke test the validation image
+      if: github.event_name == 'workflow_dispatch' && inputs.publish != true
+      run: |
+        docker run --rm dockerhddm:test \
+          python -c "import pymc; import kabuki; import hddm; print('pymc:', pymc.__version__); print('dockerHDDM smoke test passed')"
+
+    - name: Docker login
+      if: github.event_name == 'push' || inputs.publish == true
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+    - name: Build and push multi-arch image
+      if: github.event_name == 'push' || inputs.publish == true
+      run: |
+        docker buildx build --platform linux/amd64,linux/arm64 \
+          -t ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.HDDM_VERSION }} \
+          -t ${{ secrets.DOCKERHUB_USERNAME }}/hddm:latest \
+          -f Dockerfile . --push
