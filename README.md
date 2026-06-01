@@ -70,7 +70,7 @@ Or copy and paste one of these URLs:
 
 We also provide a `Dockerfile` at root path to build the customized docker image.
 
-**v1.1.0** is built on Ubuntu 24.04 (Python 3.12), based on [quay.io/jupyter/scipy-notebook:python-3.12](https://quay.io/repository/jupyter/scipy-notebook). This Dockerfile was originally created by Dr. Rui Yuan @ Stanford and has been maintained and upgraded by the dockerHDDM team. See `Dockerfile` for the details.
+**v1.1.0** is built on Ubuntu 24.04 (Python 3.12), based on the reproducible Jupyter Docker Stacks image [`quay.io/jupyter/scipy-notebook:82d322f00937`](https://github.com/jupyter/docker-stacks#using-old-images). This Dockerfile was originally created by Dr. Rui Yuan @ Stanford and has been maintained and upgraded by the dockerHDDM team. See `Dockerfile` for the details.
 
 Code for building the docker image (don't forget the `.` in the end):
 

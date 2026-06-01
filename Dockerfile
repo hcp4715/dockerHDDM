@@ -2,10 +2,10 @@
 # Distributed under the terms of the Modified BSD License.
 
 # dockerHDDM 1.1.0
-# Base: quay.io/jupyter/scipy-notebook:python-3.12 (Ubuntu 24.04, multi-arch: amd64 + arm64)
+# Base: quay.io/jupyter/scipy-notebook:82d322f00937 (Ubuntu 24.04, Python 3.12, multi-arch)
 # Python 3.12, HDDM latest (gitee epool), arviz 0.20.x, pymc2 from gitee epool
 
-FROM quay.io/jupyter/scipy-notebook:python-3.12
+FROM quay.io/jupyter/scipy-notebook:82d322f00937
 
 ARG PYMC2_REPO=https://gitee.com/epool/pymc2
 ARG PYMC2_REF=master

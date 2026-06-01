@@ -23,6 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       HDDM_VERSION: hddm:${{ inputs.version || '1.1.0' }}
+      JUPYTER_BASE_IMAGE: quay.io/jupyter/scipy-notebook:82d322f00937
     steps:
     - name: Checkout
       uses: actions/checkout@v4
@@ -39,12 +40,30 @@ jobs:
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v3
 
+    - name: Wait for the Jupyter base image registry
+      run: |
+        for attempt in 1 2 3 4 5; do
+          docker buildx imagetools inspect "${JUPYTER_BASE_IMAGE}" >/dev/null && break
+          if [ "$attempt" -eq 5 ]; then
+            exit 1
+          fi
+          echo "Quay registry attempt ${attempt} failed; retrying in 30 seconds..."
+          sleep 30
+        done
+
     - name: Build amd64 image for validation
       if: github.event_name == 'workflow_dispatch' && inputs.publish != true
       run: |
-        docker buildx build --platform linux/amd64 \
-          -t dockerhddm:test \
-          -f Dockerfile . --load
+        for attempt in 1 2 3; do
+          docker buildx build --platform linux/amd64 \
+            -t dockerhddm:test \
+            -f Dockerfile . --load && break
+          if [ "$attempt" -eq 3 ]; then
+            exit 1
+          fi
+          echo "Docker build attempt ${attempt} failed; retrying in 20 seconds..."
+          sleep 20
+        done
 
     - name: Smoke test the validation image
       if: github.event_name == 'workflow_dispatch' && inputs.publish != true
@@ -62,7 +81,14 @@ jobs:
     - name: Build and push multi-arch image
       if: github.event_name == 'push' || inputs.publish == true
       run: |
-        docker buildx build --platform linux/amd64,linux/arm64 \
-          -t ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.HDDM_VERSION }} \
-          -t ${{ secrets.DOCKERHUB_USERNAME }}/hddm:latest \
-          -f Dockerfile . --push
+        for attempt in 1 2 3; do
+          docker buildx build --platform linux/amd64,linux/arm64 \
+            -t ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.HDDM_VERSION }} \
+            -t ${{ secrets.DOCKERHUB_USERNAME }}/hddm:latest \
+            -f Dockerfile . --push && break
+          if [ "$attempt" -eq 3 ]; then
+            exit 1
+          fi
+          echo "Docker publish attempt ${attempt} failed; retrying in 20 seconds..."
+          sleep 20
+        done
