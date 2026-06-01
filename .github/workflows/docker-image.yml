@@ -76,7 +76,7 @@ jobs:
       if: github.event_name == 'workflow_dispatch' && inputs.publish != true
       run: |
         docker run --rm dockerhddm:test \
-          python -c "import pymc; import kabuki; import hddm; print('pymc:', pymc.__version__); print('dockerHDDM smoke test passed')"
+          python -c "import numpy; import arviz; import pymc; import pymc.flib; import kabuki; import ssms; import hddm; assert arviz.__version__ == '1.1.0'; assert numpy.__version__.split('.')[0] == '2'; print('numpy:', numpy.__version__); print('arviz:', arviz.__version__); print('pymc:', pymc.__version__); print('dockerHDDM smoke test passed')"
 
     - name: Docker login
       if: github.event_name == 'push' || inputs.publish == true

@@ -7,3 +7,6 @@
 [submodule "pymc2"]
 	path = pymc2
 	url = https://github.com/panwanke/pymc2
+[submodule "ssm-simulators"]
+	path = ssm-simulators
+	url = https://github.com/panwanke/ssm-simulators

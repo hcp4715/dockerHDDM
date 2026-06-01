@@ -1,5 +1,5 @@
 # Test pymc2 compilation on Python 3.12 + Ubuntu 24.04.
-# Validates that the Gitee pymc2 package can compile and run basic MCMC sampling
+# Validates that the maintained GitHub pymc2 fork can compile and run basic MCMC sampling
 # on the target platform before committing to the full dockerHDDM 1.1.0 upgrade.
 #
 # Trigger: manual only (workflow_dispatch)
@@ -13,7 +13,7 @@ jobs:
   test-pymc2:
     runs-on: ubuntu-24.04
     env:
-      PYMC2_REPO: https://gitee.com/epool/pymc2
+      PYMC2_REPO: https://github.com/panwanke/pymc2.git
     strategy:
       matrix:
         python-version: ['3.12']
@@ -37,9 +37,10 @@ jobs:
         run: |
           echo "=== Installing pymc2 from ${PYMC2_REPO}@master ==="
           pip install --upgrade pip
+          pip install "numpy>=2,<3" scipy "arviz==1.1.0"
           pip install "git+${PYMC2_REPO}@master"
           echo "=== Verifying pymc2 import ==="
-          python -c "import pymc; import pymc.flib; import pymc.gp.linalg_utils; print('pymc version:', pymc.__version__)"
+          python -c "import numpy; import arviz; import pymc; import pymc.flib; import pymc.gp.linalg_utils; assert arviz.__version__ == '1.1.0'; assert numpy.__version__.split('.')[0] == '2'; print('numpy version:', numpy.__version__); print('arviz version:', arviz.__version__); print('pymc version:', pymc.__version__)"
           echo "=== SUCCESS: pymc2 compiles on Python ${{ matrix.python-version }} ==="
 
       - name: Test pymc2 MCMC sampling (PyMC2 API)

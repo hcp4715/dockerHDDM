@@ -1,8 +1,8 @@
 # A HDDM docker image
 
-This is dockerHDDM github repo `hddm:1.1.0`: Python 3.12, HDDM (latest), arviz 0.20.x, and pymc2 from the Gitee epool mirror. This version is compatible for both amd64 and arm64.
+This is dockerHDDM github repo `hddm:1.1.0`: Python 3.12, HDDM (latest), arviz 1.1.0, and the maintained pymc2 fork. This version is compatible for both amd64 and arm64.
 
-> **v1.1.0 Changelog**: Upgraded Python from 3.9 to 3.12, Ubuntu from 22.04 to 24.04, arviz from 0.15.1 to 0.20.x. kabuki/hddm use latest gitee epool commits. pymc2 is installed from the `master` branch of `https://gitee.com/epool/pymc2` and builds without numpy.distutils.
+> **v1.1.0 Changelog**: Upgraded Python from 3.9 to 3.12, Ubuntu from 22.04 to 24.04, arviz from 0.15.1 to 1.1.0, and NumPy to the 2.x line. pymc2, kabuki, ssm-simulators, and hddm are installed from the maintained public GitHub forks.
 
 In the `OfficialTutorial` folder, you can look for [official jupyter notebooks from HDDM](http://ski.clps.brown.edu/hddm_docs/tutorial.html) that have been tested and verified to work.
 
@@ -85,8 +85,8 @@ docker build -t [username]/hddm:[tag] -f Dockerfile .
 
 Open the repository's `Actions` page, select `dockerHDDM CI (Build & Publish)`,
 and run the workflow manually with `publish` set to `false`. The workflow builds
-an amd64 image without publishing it, then verifies that `pymc`, `kabuki`, and
-`hddm` import successfully.
+an amd64 image without publishing it, then verifies NumPy 2.x, arviz 1.1.0, and
+successful imports for `pymc`, `kabuki`, `ssms`, and `hddm`.
 
 If the official Quay registry is temporarily unavailable, the workflow will
 retry before failing. The optional `base_image` input can point to your own

@@ -3,13 +3,19 @@
 
 # dockerHDDM 1.1.0
 # Base: quay.io/jupyter/scipy-notebook:82d322f00937 (Ubuntu 24.04, Python 3.12, multi-arch)
-# Python 3.12, HDDM latest (gitee epool), arviz 0.20.x, pymc2 from gitee epool
+# Python 3.12, HDDM latest, arviz latest, pymc2 from GitHub
 
 ARG JUPYTER_BASE_IMAGE=quay.io/jupyter/scipy-notebook:82d322f00937
 FROM ${JUPYTER_BASE_IMAGE}
 
-ARG PYMC2_REPO=https://gitee.com/epool/pymc2
+ARG PYMC2_REPO=https://github.com/panwanke/pymc2.git
 ARG PYMC2_REF=master
+ARG KABUKI_REPO=https://github.com/panwanke/kabuki.git
+ARG KABUKI_REF=master
+ARG SSM_SIMULATORS_REPO=https://github.com/panwanke/ssm-simulators.git
+ARG SSM_SIMULATORS_REF=dockerHDDM_stable
+ARG HDDM_REPO=https://github.com/panwanke/hddm.git
+ARG HDDM_REF=master
 
 LABEL maintainer="Hu Chuan-Peng <hcp4715@hotmail.com>"
 LABEL version="1.1.0"
@@ -45,24 +51,23 @@ RUN conda install -c conda-forge --quiet --yes \
 # Upgrade pip first
 RUN pip install --upgrade pip
 
-RUN pip install setuptools wheel "numpy>=1.26,<2" scipy
+RUN pip install setuptools wheel "numpy>=2,<3" scipy "cython>=3,<4"
 
 # Install pandas (compatible with Python 3.12)
 RUN pip install pandas -i https://pypi.tuna.tsinghua.edu.cn/simple
 
-# Install pymc2 from gitee mirror (core HDDM dependency)
-RUN pip install "git+${PYMC2_REPO}@${PYMC2_REF}"
+# Install the latest arviz release while keeping NumPy within the tested major line
+RUN pip install "arviz==1.1.0" "numpy>=2,<3" -i https://pypi.tuna.tsinghua.edu.cn/simple
 
-# Install kabuki and ssm-simulators from gitee mirrors (latest master commit)
-RUN pip install git+https://gitee.com/epool/kabuki
-RUN pip install git+https://gitee.com/epool/ssm-simulators@dockerHDDM_stable -i https://pypi.tuna.tsinghua.edu.cn/simple
+# Install the maintained Python 3.12 / NumPy 2 compatible forks from GitHub
+RUN pip install --no-deps "git+${PYMC2_REPO}@${PYMC2_REF}"
 
-# Install HDDM from gitee mirror (latest master commit)
-RUN pip install git+https://gitee.com/epool/hddm.git && \
+RUN pip install --no-deps "git+${KABUKI_REPO}@${KABUKI_REF}"
+
+RUN pip install --no-deps "git+${SSM_SIMULATORS_REPO}@${SSM_SIMULATORS_REF}" -i https://pypi.tuna.tsinghua.edu.cn/simple
+
+RUN pip install --no-build-isolation --no-deps "git+${HDDM_REPO}@${HDDM_REF}" && \
   fix-permissions "/home/${NB_USER}"
-
-# Install arviz 0.20.x
-RUN pip install "arviz<0.21" -i https://pypi.tuna.tsinghua.edu.cn/simple
 
 # Install seaborn (latest compatible version)
 RUN pip install seaborn -i https://pypi.tuna.tsinghua.edu.cn/simple
