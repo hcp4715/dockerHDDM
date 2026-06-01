@@ -88,6 +88,10 @@ and run the workflow manually with `publish` set to `false`. The workflow builds
 an amd64 image without publishing it, then verifies that `pymc`, `kabuki`, and
 `hddm` import successfully.
 
+If the official Quay registry is temporarily unavailable, the workflow will
+retry before failing. The optional `base_image` input can point to your own
+Docker Hub cache of the same Jupyter image without changing the Dockerfile.
+
 Set `publish` to `true` only when the validation build passes and you want to
 publish the amd64 and arm64 images to Docker Hub.
 

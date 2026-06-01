@@ -13,6 +13,11 @@ on:
         required: true
         default: false
         type: boolean
+      base_image:
+        description: 'Jupyter base image (use a Docker Hub cache if Quay is unavailable)'
+        required: true
+        default: 'quay.io/jupyter/scipy-notebook:82d322f00937'
+        type: string
   push:
     tags:
       - 'v*'
@@ -23,7 +28,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       HDDM_VERSION: hddm:${{ inputs.version || '1.1.0' }}
-      JUPYTER_BASE_IMAGE: quay.io/jupyter/scipy-notebook:82d322f00937
+      JUPYTER_BASE_IMAGE: ${{ inputs.base_image || 'quay.io/jupyter/scipy-notebook:82d322f00937' }}
     steps:
     - name: Checkout
       uses: actions/checkout@v4
@@ -40,22 +45,24 @@ jobs:
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v3
 
-    - name: Wait for the Jupyter base image registry
+    - name: Select the Jupyter base image
       run: |
         for attempt in 1 2 3 4 5; do
-          docker buildx imagetools inspect "${JUPYTER_BASE_IMAGE}" >/dev/null && break
-          if [ "$attempt" -eq 5 ]; then
-            exit 1
+          if docker buildx imagetools inspect "${JUPYTER_BASE_IMAGE}" >/dev/null; then
+            echo "SELECTED_BASE_IMAGE=${JUPYTER_BASE_IMAGE}" >> "$GITHUB_ENV"
+            exit 0
           fi
-          echo "Quay registry attempt ${attempt} failed; retrying in 30 seconds..."
+          echo "Base image registry attempt ${attempt} failed; retrying in 30 seconds..."
           sleep 30
         done
+        exit 1
 
     - name: Build amd64 image for validation
       if: github.event_name == 'workflow_dispatch' && inputs.publish != true
       run: |
         for attempt in 1 2 3; do
           docker buildx build --platform linux/amd64 \
+            --build-arg JUPYTER_BASE_IMAGE="${SELECTED_BASE_IMAGE}" \
             -t dockerhddm:test \
             -f Dockerfile . --load && break
           if [ "$attempt" -eq 3 ]; then
@@ -83,6 +90,7 @@ jobs:
       run: |
         for attempt in 1 2 3; do
           docker buildx build --platform linux/amd64,linux/arm64 \
+            --build-arg JUPYTER_BASE_IMAGE="${SELECTED_BASE_IMAGE}" \
             -t ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.HDDM_VERSION }} \
             -t ${{ secrets.DOCKERHUB_USERNAME }}/hddm:latest \
             -f Dockerfile . --push && break

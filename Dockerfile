@@ -5,7 +5,8 @@
 # Base: quay.io/jupyter/scipy-notebook:82d322f00937 (Ubuntu 24.04, Python 3.12, multi-arch)
 # Python 3.12, HDDM latest (gitee epool), arviz 0.20.x, pymc2 from gitee epool
 
-FROM quay.io/jupyter/scipy-notebook:82d322f00937
+ARG JUPYTER_BASE_IMAGE=quay.io/jupyter/scipy-notebook:82d322f00937
+FROM ${JUPYTER_BASE_IMAGE}
 
 ARG PYMC2_REPO=https://gitee.com/epool/pymc2
 ARG PYMC2_REF=master
@@ -19,16 +20,15 @@ USER root
 # Install system build dependencies (gcc, g++, gfortran are needed for pymc2 compilation)
 # Ubuntu 24.04 already includes most tools; these ensure the full build chain is present
 RUN apt-get update -y && \
-  apt-get upgrade -y && \
-  apt-get install -y apt-utils && \
-  apt-get install -y build-essential && \
-  apt-get install -y gcc && \
-  apt-get install -y g++ && \
-  apt-get install -y gfortran && \
-  apt-get install -y git && \
-  apt-get install -y pkg-config && \
-  apt-get install -y libopenblas-dev && \
-  apt-get install -y liblapack-dev && \
+  DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+    build-essential \
+    gcc \
+    g++ \
+    gfortran \
+    git \
+    pkg-config \
+    libopenblas-dev \
+    liblapack-dev && \
   rm -rf /var/lib/apt/lists/*
 
 USER $NB_UID
