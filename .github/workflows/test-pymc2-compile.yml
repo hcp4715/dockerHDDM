@@ -1,22 +1,18 @@
-# Phase 1: Test pymc2 compilation on Python 3.11 + Ubuntu 24.04
-# Validates that pymc2 (theano) can compile and run basic MCMC sampling
+# Test pymc2 compilation on Python 3.12 + Ubuntu 24.04.
+# Validates that the Gitee pymc2 package can compile and run basic MCMC sampling
 # on the target platform before committing to the full dockerHDDM 1.1.0 upgrade.
-#
-# Python 3.12 was blocked: numpy >= 1.26 removed numpy.distutils which
-# pymc2's Fortran build system requires (see trace/dead_ends/).
-# Python 3.11 with numpy < 1.26 still has numpy.distutils.
 #
 # Trigger: manual (workflow_dispatch) or on push to Dockerfile
 
-name: Test pymc2 Compilation (Phase 1)
+name: Test pymc2 Compilation
 
 on:
   workflow_dispatch:
     inputs:
-      python_version:
-        description: 'Python version to test'
+      pymc2_ref:
+        description: 'Gitee pymc2 branch, tag, or commit to test'
         required: false
-        default: '3.11'
+        default: 'master'
         type: string
   push:
     branches: [master]
@@ -27,9 +23,12 @@ on:
 jobs:
   test-pymc2:
     runs-on: ubuntu-24.04
+    env:
+      PYMC2_REPO: https://gitee.com/epool/pymc2
+      PYMC2_REF: ${{ github.event.inputs.pymc2_ref || 'master' }}
     strategy:
       matrix:
-        python-version: ['3.11']
+        python-version: ['3.12']
       fail-fast: false
 
     steps:
@@ -44,18 +43,15 @@ jobs:
       - name: Install system build dependencies
         run: |
           sudo apt-get update -y
-          sudo apt-get install -y build-essential gcc g++ gfortran
+          sudo apt-get install -y build-essential gcc g++ gfortran pkg-config libopenblas-dev liblapack-dev
 
       - name: Test pymc2 compilation + import
         run: |
-          echo "=== Installing pymc2 from gitee epool ==="
+          echo "=== Installing pymc2 from ${PYMC2_REPO}@${PYMC2_REF} ==="
           pip install --upgrade pip
-          # numpy < 1.26 is needed because numpy.distutils was removed in 1.26+
-          # Python 3.11 can use numpy 1.25.x which still has numpy.distutils
-          pip install "numpy<1.26" scipy
-          pip install git+https://gitee.com/epool/pymc2
+          pip install "git+${PYMC2_REPO}@${PYMC2_REF}"
           echo "=== Verifying pymc2 import ==="
-          python -c "import pymc; print('pymc version:', pymc.__version__)"
+          python -c "import pymc; import pymc.flib; import pymc.gp.linalg_utils; print('pymc version:', pymc.__version__)"
           echo "=== SUCCESS: pymc2 compiles on Python ${{ matrix.python-version }} ==="
 
       - name: Test pymc2 MCMC sampling (PyMC2 API)
