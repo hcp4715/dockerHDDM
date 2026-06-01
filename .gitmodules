@@ -4,3 +4,6 @@
 [submodule "hddm"]
 	path = hddm
 	url = https://github.com/panwanke/hddm.git
+[submodule "pymc2"]
+	path = pymc2
+	url = https://github.com/panwanke/pymc2
