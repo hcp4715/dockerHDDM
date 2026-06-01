@@ -1,0 +1,6 @@
+[submodule "kabuki"]
+	path = kabuki
+	url = https://github.com/panwanke/kabuki.git
+[submodule "hddm"]
+	path = hddm
+	url = https://github.com/panwanke/hddm.git

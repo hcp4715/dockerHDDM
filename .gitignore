@@ -2,3 +2,5 @@
 .ipynb_checkpoints
 lan_to_hddm_tmp_data
 arc
+
+*.ps1
