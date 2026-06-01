@@ -1,9 +1,10 @@
-# Phase 1: Test pymc2 compilation on Python 3.12 + Ubuntu 24.04
+# Phase 1: Test pymc2 compilation on Python 3.11 + Ubuntu 24.04
 # Validates that pymc2 (theano) can compile and run basic MCMC sampling
 # on the target platform before committing to the full dockerHDDM 1.1.0 upgrade.
 #
-# Note: theano is a dependency of pymc2 — testing pymc2 import implicitly
-# validates theano compilation. A separate theano test is not needed.
+# Python 3.12 was blocked: numpy >= 1.26 removed numpy.distutils which
+# pymc2's Fortran build system requires (see trace/dead_ends/).
+# Python 3.11 with numpy < 1.26 still has numpy.distutils.
 #
 # Trigger: manual (workflow_dispatch) or on push to Dockerfile
 
@@ -15,7 +16,7 @@ on:
       python_version:
         description: 'Python version to test'
         required: false
-        default: '3.12'
+        default: '3.11'
         type: string
   push:
     branches: [master]
@@ -28,7 +29,7 @@ jobs:
     runs-on: ubuntu-24.04
     strategy:
       matrix:
-        python-version: ['3.12']
+        python-version: ['3.11']
       fail-fast: false
 
     steps:
@@ -49,12 +50,10 @@ jobs:
         run: |
           echo "=== Installing pymc2 from gitee epool ==="
           pip install --upgrade pip
-          # pymc2 setup.py uses 'import pkg_resources' which was removed from
-          # setuptools >= 67.0. Installing setuptools globally, then using
-          # --no-build-isolation so pip reuses it instead of creating an
-          # isolated env that would again lack pkg_resources.
-          pip install "setuptools<70" wheel "numpy<2" scipy
-          pip install --no-build-isolation git+https://gitee.com/epool/pymc2
+          # numpy < 1.26 is needed because numpy.distutils was removed in 1.26+
+          # Python 3.11 can use numpy 1.25.x which still has numpy.distutils
+          pip install "numpy<1.26" scipy
+          pip install git+https://gitee.com/epool/pymc2
           echo "=== Verifying pymc2 import ==="
           python -c "import pymc; print('pymc version:', pymc.__version__)"
           echo "=== SUCCESS: pymc2 compiles on Python ${{ matrix.python-version }} ==="
@@ -66,7 +65,6 @@ jobs:
           import numpy as np
           print('=== Testing pymc2 MCMC sampling ===')
           # PyMC2 API: create stochastic nodes directly (no Model() context manager)
-          # Variables are automatically registered in the global model namespace
           mu = pymc.Normal('mu', mu=0, tau=1, value=0)
           # MCMC() accepts a list of nodes directly (PyMC2 pattern)
           mcmc = pymc.MCMC([mu])
