@@ -76,7 +76,7 @@ jobs:
       if: github.event_name == 'workflow_dispatch' && inputs.publish != true
       run: |
         docker run --rm dockerhddm:test \
-          python -c "import numpy; import arviz; import pymc; import pymc.flib; import kabuki; import ssms; import hddm; assert arviz.__version__ == '1.1.0'; assert numpy.__version__.split('.')[0] == '2'; print('numpy:', numpy.__version__); print('arviz:', arviz.__version__); print('pymc:', pymc.__version__); print('dockerHDDM smoke test passed')"
+          python -c "from pathlib import Path; import numpy; import arviz; import pymc; import pymc.flib; import kabuki; import ssms; import hddm; home = Path('/home/jovyan'); required = [home / 'dockerHDDM_Quick_View.ipynb', home / 'dockerHDDM_Workflow.ipynb', home / 'dockerHDDMTutorial' / 'dockerHDDM_Subsampling_LOO.ipynb', home / 'dockerHDDMTutorial' / 'RLDDM.ipynb', home / 'dockerHDDMTutorial' / 'dockerHDDM_PPC_rt_quantiles.ipynb', home / 'dockerHDDMTutorial' / 'Parameter_recovery.ipynb', home / 'OfficialTutorials' / 'From_simulator_to_intference_with_HDDM_LAN_version.ipynb']; missing = [str(p) for p in required if not p.exists()]; assert not missing, missing; assert arviz.__version__ == '1.1.0'; assert numpy.__version__.split('.')[0] == '2'; print('numpy:', numpy.__version__); print('arviz:', arviz.__version__); print('pymc:', pymc.__version__); print('dockerHDDM smoke test passed')"
 
     - name: Docker login
       if: github.event_name == 'push' || inputs.publish == true

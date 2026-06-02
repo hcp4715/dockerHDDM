@@ -86,15 +86,13 @@ RUN MPLBACKEND=Agg python -c "import matplotlib.pyplot" &&\
 USER $NB_UID
 WORKDIR $HOME
 
-# Copy example data and scripts to the example folder
-RUN mkdir /home/$NB_USER/OfficialTutorials && \
+# Copy example notebooks to the notebook home.
+RUN mkdir /home/$NB_USER/OfficialTutorials /home/$NB_USER/dockerHDDMTutorial && \
   rm -r /home/$NB_USER/work && \
   fix-permissions /home/$NB_USER
 
 
 COPY /dockerHDDM_Quick_View.ipynb /home/$NB_USER
 COPY /dockerHDDM_Workflow.ipynb /home/$NB_USER
-COPY /OfficialTutorials/HDDM_Basic_Tutorial.ipynb /home/$NB_USER/OfficialTutorials
-COPY /OfficialTutorials/HDDM_Regression_Stimcoding.ipynb /home/$NB_USER/OfficialTutorials
-COPY /OfficialTutorials/Posterior_Predictive_Checks.ipynb /home/$NB_USER/OfficialTutorials
-COPY /OfficialTutorials/LAN_Tutorial.ipynb /home/$NB_USER/OfficialTutorials
+COPY /OfficialTutorials/*.ipynb /home/$NB_USER/OfficialTutorials/
+COPY /dockerHDDMTutorial/*.ipynb /home/$NB_USER/dockerHDDMTutorial/
