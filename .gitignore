@@ -4,6 +4,9 @@ lan_to_hddm_tmp_data
 arc
 
 *.ps1
+*.hddm
+*.nc
+*.db
 
 logic
 ara.yaml
