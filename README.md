@@ -2,11 +2,24 @@
 
 This is dockerHDDM github repo `hddm:1.1.0`: Python 3.12, HDDM (latest), arviz 1.1.0, and the maintained pymc2 fork. This version is compatible for both amd64 and arm64.
 
-> **v1.1.0 Changelog**: Upgraded Python from 3.9 to 3.12, Ubuntu from 22.04 to 24.04, arviz from 0.15.1 to 1.1.0, and NumPy to the 2.x line. pymc2, kabuki, ssm-simulators, and hddm are installed from the maintained public GitHub forks.
+> **v1.1.0 Changelog**: Upgraded Python from 3.9 to 3.12, Ubuntu from 22.04 to 24.04, arviz from 0.15.1 to 1.1.0, and NumPy to the 2.x line. pymc2, kabuki, ssm-simulators, and hddm are installed from the maintained public GitHub forks. **New**: Subsampled PSIS-LOO model comparison via ArviZ 1.1 `loo_subsample()` — see `dockerHDDMTutorial/dockerHDDM_Subsampling_LOO.ipynb`.
 
 In the `OfficialTutorial` folder, you can look for [official jupyter notebooks from HDDM](http://ski.clps.brown.edu/hddm_docs/tutorial.html) that have been tested and verified to work.
 
 The `dockerHDDM_Quick_View.ipynb` and `dockerHDDM_Workflow.ipynb` are new notebooks using new functions from dockerHDDM (more details see [dockerHDDM paper](https://osf.io/preprints/psyarxiv/6uzga)).
+
+## Subsampled PSIS-LOO (New in v1.1.0)
+
+dockerHDDM v1.1.0 ships with ArviZ 1.1, which unlocks **subsampled PSIS-LOO** (`az.loo_subsample()`) for scalable model comparison. This feature allows you to estimate LOO-CV on large HDDM datasets without computing the full pointwise log-likelihood matrix — ideal when posterior sample size or observation count makes `az.loo()` prohibitive.
+
+The tutorial notebook [`dockerHDDMTutorial/dockerHDDM_Subsampling_LOO.ipynb`](dockerHDDMTutorial/dockerHDDM_Subsampling_LOO.ipynb) walks through:
+
+- Environment check (`az.loo_subsample` / `az.update_subsample` / `arviz_stats.loo_subsample`)
+- Fitting a HDDM model with pointwise log-likelihood (`return_infdata=True, loglike=True`)
+- Full PSIS-LOO as the reference baseline
+- Subsampled PSIS-LOO with configurable observations/samples
+- Updating and reusing a subsample estimate
+- Saving, reloading, and re-running the analysis
 
 ## Report issues
 
